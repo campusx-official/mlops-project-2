@@ -28,16 +28,11 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: configure DagsHub credentials
+      - name: set DagsHub MLflow credentials
         run: |
-          mkdir -p ~/.netrc
-          echo "machine dagshub.com" > ~/.netrc
-          echo "login ${{ secrets.DAGSHUB_PAT }}" >> ~/.netrc
-          echo "password ${{ secrets.DAGSHUB_PAT }}" >> ~/.netrc
-          cat ~/.netrc
+          echo "MLFLOW_TRACKING_USERNAME=${{ secrets.DAGSHUB_PAT }}" >> $GITHUB_ENV
+          echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.DAGSHUB_PAT }}" >> $GITHUB_ENV
 
       - name: run pipeline
-        env:
-          DAGSHUB_API_TOKEN: ${{ secrets.DAGSHUB_PAT }}
         run: |
           dvc repro
