@@ -29,10 +29,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: set DagsHub API token
-        env:
-          DAGSHUB_API_TOKEN: ${{ secrets.DAGSHUB_PAT }}
         run: |
-          echo "DAGSHUB_API_TOKEN is set"
+          echo "DAGSHUB_PAT=${{ secrets.DAGSHUB_PAT }}" >> $GITHUB_ENV
 
       - name: run pipeline
         env:

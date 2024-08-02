@@ -10,16 +10,21 @@ import mlflow.sklearn
 import dagshub
 
 # Set up DagsHub authentication
-dagshub_url = "https://dagshub.com"
+# Set up DagsHub API token
 dagshub_token = os.getenv("DAGSHUB_PAT")
 if not dagshub_token:
     raise EnvironmentError("DAGSHUB_PAT environment variable is not set")
 
-mlflow.set_tracking_uri(f'{dagshub_url}/campusx-official/mlops-project-2.mlflow')
+dagshub_url = "https://dagshub.com"
+repo_owner = "campusx-official"
+repo_name = "mlops-project-2"
+
+# Set up MLflow tracking URI
+mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
 dagshub.init(
-    repo_owner='campusx-official',
-    repo_name='mlops-project-2',
+    repo_owner=repo_owner,
+    repo_name=repo_name,
     mlflow=True
 )
 
