@@ -3,11 +3,16 @@
 import json
 import mlflow
 import logging
-
+import os
 import dagshub
 
 mlflow.set_tracking_uri('https://dagshub.com/campusx-official/mlops-project-2.mlflow')
-dagshub.init(repo_owner='campusx-official', repo_name='mlops-project-2', mlflow=True)
+dagshub.init(
+    repo_owner='campusx-official',
+    repo_name='mlops-project-2',
+    token=os.getenv('DAGSHUB_PAT'),
+    mlflow=True
+)
 
 
 # logging configuration

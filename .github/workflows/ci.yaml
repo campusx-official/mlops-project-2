@@ -21,6 +21,14 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: configure DagsHub credentials
+        env:
+          DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
+        run: |
+          echo "machine dagshub.com" > ~/.netrc
+          echo "login $DAGSHUB_PAT" >> ~/.netrc
+          echo "password $DAGSHUB_PAT" >> ~/.netrc
+
       - name: run pipeline
         run: |
           dvc repro
