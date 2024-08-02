@@ -36,10 +36,6 @@ jobs:
           echo "login $DAGSHUB_PAT" >> ~/.netrc
           echo "password $DAGSHUB_PAT" >> ~/.netrc
 
-      - name: pull dvc data
-        run: |
-          dvc pull
-
       - name: run pipeline
         run: |
           dvc repro
