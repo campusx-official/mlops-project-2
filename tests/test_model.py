@@ -30,6 +30,9 @@ class TestModelLoading(unittest.TestCase):
         cls.model_uri = f'models:/{cls.model_name}/{cls.model_version}'
         cls.model = mlflow.pyfunc.load_model(cls.model_uri)
 
+        # Load the vectorizer
+        cls.vectorizer = pickle.load(open('models/vectorizer.pkl', 'rb'))
+
     @staticmethod
     def get_latest_model_version(model_name):
         client = mlflow.MlflowClient()
@@ -40,22 +43,20 @@ class TestModelLoading(unittest.TestCase):
         self.assertIsNotNone(self.model)
 
     def test_model_signature(self):
-        # Assuming the input data has the shape (number of samples, number of features)
         # Create a dummy input for the model based on expected input shape
-        input_data = "hi how are you"
-
-        vectorizer = pickle.load(open('models/vectorizer.pkl','rb'))
-        input_data = vectorizer.transform([input_data])
+        input_text = "hi how are you"
+        input_data = self.vectorizer.transform([input_text])
+        input_df = pd.DataFrame(input_data.toarray(), columns=[str(i) for i in range(input_data.shape[1])])
 
         # Predict using the model to verify the input and output shapes
-        prediction = self.model.predict(input_data)
+        prediction = self.model.predict(input_df)
 
         # Verify the input shape
-        self.assertEqual(input_data.shape[1], len(self.model.metadata.get_input_schema().columns))
-        
+        self.assertEqual(input_df.shape[1], len(self.vectorizer.get_feature_names_out()))
+
         # Verify the output shape (assuming binary classification with a single output)
-        #self.assertEqual(len(prediction), len(input_data))
-        self.assertEqual(prediction.shape[1], 1)  # Assuming a single output column
+        self.assertEqual(len(prediction), input_df.shape[0])
+        self.assertEqual(len(prediction.shape), 1)  # Assuming a single output column for binary classification
 
 if __name__ == "__main__":
     unittest.main()
