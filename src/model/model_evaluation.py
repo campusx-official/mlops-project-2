@@ -1,5 +1,4 @@
-# updated model evaluation
-
+import os
 import numpy as np
 import pandas as pd
 import pickle
@@ -9,13 +8,12 @@ import logging
 import mlflow
 import mlflow.sklearn
 import dagshub
-import os
 
 mlflow.set_tracking_uri('https://dagshub.com/campusx-official/mlops-project-2.mlflow')
+
 dagshub.init(
     repo_owner='campusx-official',
     repo_name='mlops-project-2',
-    token=os.getenv('DAGSHUB_PAT'),
     mlflow=True
 )
 
@@ -141,7 +139,7 @@ def main():
             mlflow.log_artifact('reports/metrics.json')
 
             # Log the model info file to MLflow
-            mlflow.log_artifact('reports/model_info.json')
+            mlflow.log_artifact('reports/experiment_info.json')
 
             # Log the evaluation errors log file to MLflow
             mlflow.log_artifact('model_evaluation_errors.log')
