@@ -10,7 +10,6 @@ import mlflow.sklearn
 import dagshub
 
 # Set up DagsHub authentication
-# Set up DagsHub API token
 dagshub_token = os.getenv("DAGSHUB_PAT")
 if not dagshub_token:
     raise EnvironmentError("DAGSHUB_PAT environment variable is not set")
@@ -27,7 +26,6 @@ dagshub.init(
     repo_name=repo_name,
     mlflow=True
 )
-
 # logging configuration
 logger = logging.getLogger('model_evaluation')
 logger.setLevel('DEBUG')

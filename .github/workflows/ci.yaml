@@ -28,9 +28,13 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: set DagsHub API token
+      - name: configure DagsHub credentials
         run: |
-          echo "DAGSHUB_PAT=${{ secrets.DAGSHUB_PAT }}" >> $GITHUB_ENV
+          mkdir -p ~/.netrc
+          echo "machine dagshub.com" > ~/.netrc
+          echo "login ${{ secrets.DAGSHUB_PAT }}" >> ~/.netrc
+          echo "password ${{ secrets.DAGSHUB_PAT }}" >> ~/.netrc
+          cat ~/.netrc
 
       - name: run pipeline
         env:
