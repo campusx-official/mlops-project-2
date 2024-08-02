@@ -29,7 +29,6 @@ dagshub.init(
     repo_name=repo_name,
     mlflow=True
 )
-
 # logging configuration
 logger = logging.getLogger('model_evaluation')
 logger.setLevel('DEBUG')
