@@ -3,6 +3,7 @@ import mlflow
 import os
 import pandas as pd
 from mlflow.pyfunc import PyFuncModel
+import pickle
 
 class TestModelLoading(unittest.TestCase):
 
@@ -41,12 +42,10 @@ class TestModelLoading(unittest.TestCase):
     def test_model_signature(self):
         # Assuming the input data has the shape (number of samples, number of features)
         # Create a dummy input for the model based on expected input shape
-        input_data = pd.DataFrame({
-            "feature1": [0],
-            "feature2": [0],
-            "feature3": [0],
-            # Add all required features here
-        })
+        input_data = "hi how are you"
+
+        vectorizer = pickle.load(open('models/vectorizer.pkl','rb'))
+        input_data = vectorizer.transform([input_data])
 
         # Predict using the model to verify the input and output shapes
         prediction = self.model.predict(input_data)
