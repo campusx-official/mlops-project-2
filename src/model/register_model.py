@@ -6,7 +6,13 @@ import logging
 import os
 import dagshub
 
-mlflow.set_tracking_uri('https://dagshub.com/campusx-official/mlops-project-2.mlflow')
+# Set up DagsHub authentication
+dagshub_url = "https://dagshub.com"
+dagshub_token = os.getenv("DAGSHUB_API_TOKEN")
+if not dagshub_token:
+    raise EnvironmentError("DAGSHUB_API_TOKEN environment variable is not set")
+
+mlflow.set_tracking_uri(f'{dagshub_url}/campusx-official/mlops-project-2.mlflow')
 
 dagshub.init(
     repo_owner='campusx-official',
