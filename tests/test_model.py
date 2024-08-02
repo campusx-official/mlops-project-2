@@ -1,6 +1,8 @@
 import unittest
 import mlflow
 import os
+import pandas as pd
+from mlflow.pyfunc import PyFuncModel
 
 class TestModelLoading(unittest.TestCase):
 
@@ -35,6 +37,26 @@ class TestModelLoading(unittest.TestCase):
 
     def test_model_loaded_properly(self):
         self.assertIsNotNone(self.model)
+
+    def test_model_signature(self):
+        # Assuming the input data has the shape (number of samples, number of features)
+        # Create a dummy input for the model based on expected input shape
+        input_data = pd.DataFrame({
+            "feature1": [0],
+            "feature2": [0],
+            "feature3": [0],
+            # Add all required features here
+        })
+
+        # Predict using the model to verify the input and output shapes
+        prediction = self.model.predict(input_data)
+
+        # Verify the input shape
+        self.assertEqual(input_data.shape[1], len(self.model.metadata.get_input_schema().columns))
+        
+        # Verify the output shape (assuming binary classification with a single output)
+        self.assertEqual(len(prediction), len(input_data))
+        self.assertEqual(prediction.shape[1], 1)  # Assuming a single output column
 
 if __name__ == "__main__":
     unittest.main()
