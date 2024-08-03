@@ -54,11 +54,14 @@ def predict():
     # bow
     features = vectorizer.transform([text])
 
+    # Convert sparse matrix to DataFrame
+    features_df = pd.DataFrame.sparse.from_spmatrix(features)
+
     # prediction
-    result = model.predict(features)
+    result = model.predict(features_df)
 
     # show
-    return render_template('index.html', result= result[0])
+    return render_template('index.html', result=result[0])
 
 if __name__ == "__main__":
     app.run(debug=True)
